@@ -24,29 +24,29 @@ export async function POST({ request }): Promise<Response> {
 		stream: true
 	});
 
-	const readableStream = new Readable({
-		read() {}
-	});
-
-	(async () => {
-		for await (const chunk of stream) {
-			if (chunk.choices[0].delta.content) {
-				const content = chunk.choices[0].delta.content;
-				readableStream.push(content);
+	const readableStream = Readable.from(
+		(async function* () {
+			for await (const chunk of stream) {
+				if (chunk.choices[0].delta.content) {
+					yield chunk.choices[0].delta.content;
+				}
 			}
-		}
-		readableStream.push(null); // Signal the end of the stream
-	})();
+		})()
+	);
 
-	const webReadableStream = new ReadableStream({
-		start(controller) {
-			readableStream.on('data', (chunk) => controller.enqueue(chunk));
-			readableStream.on('end', () => controller.close());
-			readableStream.on('error', (err) => controller.error(err));
+	return new Response(
+		new ReadableStream({
+			start(controller) {
+				(async () => {
+					for await (const chunk of readableStream) {
+						controller.enqueue(new TextEncoder().encode(chunk));
+					}
+					controller.close();
+				})();
+			}
+		}),
+		{
+			headers: { 'Content-Type': 'text/plain' }
 		}
-	});
-
-	return new Response(webReadableStream, {
-		headers: { 'Content-Type': 'text/plain' }
-	});
+	);
 }
