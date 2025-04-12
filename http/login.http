@@ -1,0 +1,2 @@
+POST http://localhost:5173/api/v1/login
+Authorization: Bearer {{$dotenv PASSWORD}}

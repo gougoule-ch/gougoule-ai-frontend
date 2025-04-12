@@ -1,0 +1,7 @@
+POST http://localhost:5173/api/v1/ask
+Authorization: Bearer {{$dotenv PASSWORD}}
+Content-Type: application/json
+
+{
+  "question": "What is the capital of france ?"
+}

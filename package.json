@@ -32,7 +32,9 @@
 		"vite": "^6.2.5"
 	},
 	"dependencies": {
+		"@types/node": "^22.14.1",
 		"drizzle-orm": "^0.40.0",
+		"openai": "^4.93.0",
 		"postgres": "^3.4.5"
 	}
 }
