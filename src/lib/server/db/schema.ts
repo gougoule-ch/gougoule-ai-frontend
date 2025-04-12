@@ -1,6 +1,6 @@
 import { pgTable, text, uuid, varchar, timestamp } from 'drizzle-orm/pg-core';
 
-export const message = pgTable('message', {
+export const messages = pgTable('messages', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	content: text('content').notNull(),
 	createdAt: timestamp('created_at').defaultNow(),
