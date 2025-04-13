@@ -1,0 +1,33 @@
+POST http://localhost:5173/api/v1/project
+Authorization: Bearer {{$dotenv PASSWORD}}
+Content-Type: application/json
+
+{
+    "name": "test1"
+}
+
+###
+
+GET http://localhost:5173/api/v1/project
+Authorization: Bearer {{$dotenv PASSWORD}}
+
+###
+
+PUT http://localhost:5173/api/v1/project
+Authorization: Bearer {{$dotenv PASSWORD}}
+Content-Type: application/json
+
+{
+    "name": "test2",
+    "id": "9706ad56-bd64-47c3-9821-dafbf3581da9"
+}
+
+###
+
+DELETE http://localhost:5173/api/v1/project
+Authorization: Bearer {{$dotenv PASSWORD}}
+Content-Type: application/json
+
+{
+    "id": "9706ad56-bd64-47c3-9821-dafbf3581da9"
+}
