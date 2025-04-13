@@ -1,9 +1,18 @@
-<script>
+<script lang="ts">
+	//TODO: code blocks on mobile are broken
 	import Send from '$lib/components/send.svelte';
 	import { password } from '$lib/store';
+	import { marked } from 'marked';
 	import { onMount, tick } from 'svelte';
 
+	type Message = {
+		role: string;
+		content: string;
+		created_at?: string;
+	};
+
 	let messages = [];
+	var question = '';
 
 	onMount(async () => {
 		const unsubscribe = password.subscribe(async (pwd) => {
@@ -13,7 +22,12 @@
 						Authorization: `Bearer ${pwd}`
 					}
 				});
-				messages = await response.json();
+				messages = (await response.json()).map((message) => {
+					if (message.role === 'assistant') {
+						message.content = marked.parse(message.content);
+					}
+					return message;
+				});
 
 				scrollToBottom();
 				adjustTextareaHeight();
@@ -21,6 +35,17 @@
 				unsubscribe(); // Stop listening to the store after the password is used
 			}
 		});
+
+		window.onkeydown = function (e: KeyboardEvent) {
+			if (
+				e.key === 'Enter' &&
+				!e.shiftKey &&
+				document.getElementById('messageTextArea') === document.activeElement
+			) {
+				e.preventDefault(); // Prevent the default action of Enter key
+				ask();
+			}
+		};
 	});
 
 	function adjustTextareaHeight() {
@@ -55,6 +80,49 @@
 		const scrollHeight = scrollableMessageContainer.scrollHeight;
 		scrollableMessageContainer.scrollTop = scrollHeight;
 	}
+
+	async function ask() {
+		const toAsk = question.trim();
+		if (!toAsk) return;
+		question = '';
+		messages = [...messages, { role: 'user', content: toAsk }];
+		messages = [...messages, { role: 'assistant', content: '' }];
+		scrollToBottom();
+		const response = await fetch('/api/v1/ask', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${$password}`
+			},
+			body: JSON.stringify({ question: toAsk })
+		});
+		const reader = response.body.getReader();
+		const decoder = new TextDecoder('utf-8');
+		let done = false;
+		let answer = '';
+
+		while (!done) {
+			const { done: doneReading, value } = await reader.read();
+			done = doneReading;
+			if (value) {
+				const text = decoder.decode(value, { stream: true });
+				answer += text;
+				messages[messages.length - 1].content = answer;
+				messages[messages.length - 1] = await parseMarkdownFromMessage(
+					messages[messages.length - 1]
+				);
+				scrollToBottom();
+			}
+		}
+	}
+
+	async function parseMarkdownFromMessage(message: {
+		role: string;
+		content: string;
+	}): Promise<Message> {
+		message.content = await marked.parse(message.content);
+		return message;
+	}
 </script>
 
 <div class="grid grid-cols-[300px_auto] max-[100vh]:grid-cols-[100vw]">
@@ -66,7 +134,7 @@
 		<div class="flex max-w-[700px] flex-col gap-10 px-4 pt-4" id="messagesContainer">
 			{#each messages as message}
 				{#if message.role == 'assistant'}
-					<p>{message.content}</p>
+					<p>{@html message.content}</p>
 				{:else if message.role == 'user'}
 					<p class="self-end rounded-2xl bg-zinc-800 p-3">{message.content}</p>
 				{/if}
@@ -83,9 +151,11 @@
 				placeholder="What is Gougoule ?"
 				on:input={adjustTextareaHeight}
 				rows="1"
+				bind:value={question}
 			></textarea>
 			<div class="flex justify-end">
-				<button class="cursor-pointer rounded-full p-2 hover:bg-black hover:invert"><Send /></button
+				<button class="cursor-pointer rounded-full p-2 hover:bg-black hover:invert" on:click={ask}
+					><Send /></button
 				>
 			</div>
 		</div>
