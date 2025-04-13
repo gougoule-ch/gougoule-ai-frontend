@@ -85,6 +85,8 @@
 		const toAsk = question.trim();
 		if (!toAsk) return;
 		question = '';
+		await tick();
+		adjustTextareaHeight();
 		messages = [...messages, { role: 'user', content: toAsk }];
 		messages = [...messages, { role: 'assistant', content: '' }];
 		scrollToBottom();
@@ -131,7 +133,7 @@
 		class="flex h-[100dvh] flex-col items-center overflow-y-auto"
 		id="scrollableMessageContainer"
 	>
-		<div class="flex max-w-[700px] flex-col gap-10 px-4 pt-4" id="messagesContainer">
+		<div class="flex w-[700px] max-w-[100vw] flex-col gap-10 px-4 pt-4" id="messagesContainer">
 			{#each messages as message}
 				{#if message.role == 'assistant'}
 					<p>{@html message.content}</p>
@@ -166,5 +168,50 @@
 	:global(body) {
 		background-color: black;
 		color: white;
+	}
+
+	:global(h1) {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(h2) {
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(h3) {
+		font-size: 1.25rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(h4) {
+		font-size: 1rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(h5) {
+		font-size: 0.875rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(h6) {
+		font-size: 0.75rem;
+		font-weight: 700;
+		margin-bottom: 1rem;
+	}
+	:global(p) {
+		font-size: 1rem;
+		margin-bottom: 1rem;
+	}
+	:global(code) {
+		font-family: 'Courier New', Courier, monospace;
+		background-color: #2c2c2c;
+		padding: 0.2rem 0.4rem;
+		border-radius: 4px;
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		margin-bottom: 1rem;
 	}
 </style>
