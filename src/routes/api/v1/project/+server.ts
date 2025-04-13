@@ -51,16 +51,11 @@ export async function GET({ request }): Promise<Response> {
 		});
 	}
 
-	const projectsList = await db.select().from(projects);
-	return new Response(
-		JSON.stringify({
-			projects: projectsList
-		}),
-		{
-			status: 200,
-			headers: { 'Content-Type': 'application/json' }
-		}
-	);
+	const projectsList = await db.select().from(projects).orderBy(projects.name);
+	return new Response(JSON.stringify(projectsList), {
+		status: 200,
+		headers: { 'Content-Type': 'application/json' }
+	});
 }
 
 export async function PUT({ request }): Promise<Response> {
