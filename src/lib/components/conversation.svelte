@@ -130,7 +130,7 @@
 	<div class="flex w-[700px] max-w-[100vw] flex-col gap-10 px-4 pt-4" id="messagesContainer">
 		{#each messages as message}
 			{#if message.role == 'assistant'}
-				<p>{@html message.content}</p>
+				{@html message.content}
 			{:else if message.role == 'user'}
 				<p class="self-end rounded-2xl bg-zinc-800 p-3">{message.content}</p>
 			{/if}
@@ -158,53 +158,48 @@
 </div>
 
 <style>
-	:global(body) {
-		background-color: black;
-		color: white;
-	}
-
-	:global(h1) {
+	:global(#messagesContainer h1) {
 		font-size: 2rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(h2) {
+	:global(#messagesContainer h2) {
 		font-size: 1.5rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(h3) {
+	:global(#messagesContainer h3) {
 		font-size: 1.25rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(h4) {
+	:global(#messagesContainer h4) {
 		font-size: 1rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(h5) {
+	:global(#messagesContainer h5) {
 		font-size: 0.875rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(h6) {
+	:global(#messagesContainer h6) {
 		font-size: 0.75rem;
 		font-weight: 700;
 		margin-bottom: 1rem;
 	}
-	:global(p) {
+	:global(#messagesContainer p) {
 		font-size: 1rem;
 		margin-bottom: 1rem;
 	}
-	:global(pre > code) {
+	:global(#messagesContainer pre > code) {
 		display: block;
 		width: 100%;
 		overflow-x: auto;
 		margin-bottom: 1rem;
 	}
 
-	:global(code) {
+	:global(#messagesContainer code) {
 		font-family: 'Courier New', Courier, monospace;
 		background-color: #2c2c2c;
 		padding: 0.2rem 0.4rem;
