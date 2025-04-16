@@ -96,7 +96,9 @@
 	<ChevronDown />
 </button>
 {#if displayProjectSelector}
-	<div class="mt-2 flex flex-col gap-2 rounded-xl border-2 border-zinc-600 bg-zinc-800 p-2">
+	<div
+		class="absolute mt-2 flex w-[calc(300px_-_1.5rem)] flex-col gap-2 rounded-xl border-2 border-zinc-600 bg-zinc-800 p-2"
+	>
 		{#each projects as project}
 			<div class="flex gap-2">
 				<button

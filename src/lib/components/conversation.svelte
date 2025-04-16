@@ -39,7 +39,8 @@
 			if (
 				e.key === 'Enter' &&
 				!e.shiftKey &&
-				document.getElementById('messageTextArea') === document.activeElement
+				document.getElementById('messageTextArea') === document.activeElement &&
+				!('ontouchstart' in window || navigator.maxTouchPoints > 0)
 			) {
 				e.preventDefault(); // Prevent the default action of Enter key
 				ask();
@@ -126,7 +127,10 @@
 	}
 </script>
 
-<div class="flex h-[100dvh] flex-col items-center overflow-y-auto" id="scrollableMessageContainer">
+<div
+	class="flex h-[100dvh] flex-col items-center overflow-y-auto pt-16"
+	id="scrollableMessageContainer"
+>
 	<div class="flex w-[700px] max-w-[100vw] flex-col gap-10 px-4 pt-4" id="messagesContainer">
 		{#each messages as message}
 			{#if message.role == 'assistant'}
@@ -137,7 +141,7 @@
 		{/each}
 	</div>
 	<div
-		class="fixed bottom-4 w-[calc(100%_-_1rem)] max-w-[700px] rounded-4xl bg-zinc-800 p-3 px-5 pt-5"
+		class="fixed bottom-6 w-[calc(100%_-_1rem)] max-w-[700px] rounded-4xl bg-zinc-800 p-3 px-5 pt-5"
 		style="box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);"
 	>
 		<textarea
