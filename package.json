@@ -36,6 +36,7 @@
 		"drizzle-orm": "^0.40.0",
 		"marked": "^15.0.8",
 		"openai": "^4.93.0",
-		"postgres": "^3.4.5"
+		"postgres": "^3.4.5",
+		"svelte-outside": "^0.0.3"
 	}
 }

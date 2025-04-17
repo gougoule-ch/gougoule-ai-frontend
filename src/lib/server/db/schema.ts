@@ -35,6 +35,20 @@ export const conversations = pgTable('conversations', {
 		.references(() => projects.id, { onDelete: 'cascade' })
 });
 
+export const notes = pgTable('notes', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	name: varchar('name', { length: 255 }).notNull(),
+	content: text('content').notNull().default(''),
+	createdAt: timestamp('created_at').defaultNow(),
+	updatedAt: timestamp('updated_at')
+		.defaultNow()
+		.$onUpdateFn(() => new Date()),
+	folderId: uuid('folder_id').references(() => folders.id, { onDelete: 'cascade' }),
+	projectId: uuid('project_id')
+		.notNull()
+		.references(() => projects.id, { onDelete: 'cascade' })
+});
+
 export const messages = pgTable('messages', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	content: text('content').notNull(),
