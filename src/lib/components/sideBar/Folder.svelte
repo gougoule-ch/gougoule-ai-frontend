@@ -1,5 +1,5 @@
 <script>
-	import { expandedFoldersIDs, password } from '$lib/store';
+	import { password } from '$lib/store';
 	import { get } from 'svelte/store';
 	import Folders from './folders/Folders.svelte';
 	import { onMount } from 'svelte';
