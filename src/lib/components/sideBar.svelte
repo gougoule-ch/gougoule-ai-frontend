@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import Project from './sideBar/Project.svelte';
 	import Bars3 from './svg/Bars3.svelte';
+	import Folder from './sideBar/Folder.svelte';
 
 	export let projectId;
 
@@ -24,6 +25,8 @@
 			<div class="h-3"></div>
 		{/if}
 		<Project {projectId} />
+		<div class="my-5 h-[1px] w-full bg-white"></div>
+		<Folder {projectId} />
 	</div>
 {/if}
 {#if !isLandscape}

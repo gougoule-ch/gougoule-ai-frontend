@@ -31,7 +31,7 @@ export async function POST({ request }): Promise<Response> {
 
 	const folder = await request.json();
 	const newFolder = await db.insert(folders).values(folder).returning();
-	return new Response(JSON.stringify(newFolder), {
+	return new Response(JSON.stringify(newFolder[0]), {
 		headers: { 'Content-Type': 'application/json' }
 	});
 }
