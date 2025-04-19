@@ -1,58 +1,37 @@
-<script>
-	import { password } from '$lib/store';
-	import { get } from 'svelte/store';
+<script lang="ts">
+	import { folders, password } from '$lib/store';
 	import Folders from './folders/Folders.svelte';
 	import { onMount } from 'svelte';
+	import { newFolder } from './folders/functions';
 
 	export let projectId;
-
-	let folders = [];
 
 	onMount(async () => {
 		const unsubscribe = password.subscribe(async (pwd) => {
 			if (pwd) {
-				const response = await fetch('/api/v1/folder', {
+				var FoldersResponse = await fetch('/api/v1/folder', {
 					headers: {
 						Authorization: `Bearer ${pwd}`
 					}
 				});
-				if (!response.ok) {
-					console.error('Failed to fetch folders:', response.statusText);
+				if (!FoldersResponse.ok) {
+					console.error('Failed to fetch folders:', FoldersResponse.statusText);
 					return;
 				}
-				folders = await response.json();
+				folders.set(
+					(await FoldersResponse.json()).filter((folder) => folder.projectId == projectId)
+				);
 				unsubscribe(); // Stop listening to the store after the password is used
 			}
 		});
 	});
-
-	async function newFolder() {
-		const response = await fetch('/api/v1/folder', {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${get(password)}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				name: 'new folder',
-				projectId
-			})
-		});
-		if (!response.ok) {
-			console.error('Failed to create folder:', response.statusText);
-			return;
-		}
-		const folder = await response.json();
-		folders = [...folders, folder];
-		console.log(folder);
-	}
 </script>
 
 <button
-	on:click={newFolder}
+	on:click={() => newFolder(projectId)}
 	class="w-full cursor-pointer rounded-xl bg-zinc-800 p-2 transition-colors duration-200 hover:bg-zinc-600"
 >
 	<p class="font-medium text-white">+ new folder</p>
 </button>
 
-<Folders parentFolderId={null} {folders} />
+<Folders parentFolderId={null} {projectId} />

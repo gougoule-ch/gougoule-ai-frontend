@@ -85,10 +85,7 @@
 	}
 
 	function changeProject(project) {
-		goto(`/p/${project.id}`);
-		selectedProject = project;
-		projectId = project.id;
-		displayProjectSelector = false;
+		window.location.href = `/p/${project.id}`;
 	}
 
 	const handleOutsideClickProjectSelector = (e) => {

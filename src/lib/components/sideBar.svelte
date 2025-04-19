@@ -19,7 +19,9 @@
 </script>
 
 {#if isLandscape || displaySideBar}
-	<div class="max-[100vh] shadow-right z-10 h-[100dvh] w-[300px] bg-zinc-800 p-3 max-[100vh]:fixed">
+	<div
+		class="max-[100vh] shadow-right z-10 h-[100dvh] w-[300px] overflow-auto bg-zinc-800 p-3 max-[100vh]:fixed"
+	>
 		{#if !isLandscape}
 			<button on:click={() => (displaySideBar = !displaySideBar)}><Bars3 /></button>
 			<div class="h-3"></div>
