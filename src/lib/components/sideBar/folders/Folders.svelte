@@ -15,6 +15,7 @@
 			<div class="flex justify-between rounded-xl hover:bg-zinc-600">
 				<button class="w-full cursor-pointer py-2 pl-2 text-start">{folder.name}</button>
 				<div class="flex items-center">
+					<button class="cursor-pointer py-2 pr-1 text-2xl"> + </button>
 					<button class="cursor-pointer py-2"><EllipsisVertical /></button>
 					<button
 						class="cursor-pointer py-2 pr-2"
