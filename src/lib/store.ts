@@ -5,3 +5,4 @@ export const expandedFoldersIDs = writable([]);
 export const expandedPlus = writable(null);
 export const expandedEllipsis = writable(null);
 export const folders = writable([]);
+export const notes = writable([]);

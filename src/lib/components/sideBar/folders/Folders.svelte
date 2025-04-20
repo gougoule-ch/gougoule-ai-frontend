@@ -7,7 +7,7 @@
 	export let parentFolderId;
 	export let projectId;
 
-	import { expandedEllipsis, expandedFoldersIDs, expandedPlus, folders } from '$lib/store';
+	import { expandedEllipsis, expandedFoldersIDs, expandedPlus, folders, notes } from '$lib/store';
 	import { get } from 'svelte/store';
 	import { tapOutside } from 'svelte-outside';
 	import PencilSquare from '$lib/components/svg/PencilSquare.svelte';
@@ -70,7 +70,7 @@
 			{/if}
 			{#if $expandedEllipsis == folder.id}
 				<div
-					class="fixed ml-[290px] flex flex-col gap-2 rounded-2xl bg-zinc-800 p-3"
+					class="fixed z-100 ml-[290px] flex flex-col gap-2 rounded-2xl bg-zinc-800 p-3"
 					use:tapOutside={(e) => {
 						if (!(e.target as HTMLElement).closest(`#ellipsisFolderButton-${folder.id}`)) {
 							expandedEllipsis.set(null);
@@ -108,6 +108,21 @@
 					</button>
 				</div>
 			{/if}
+		{/if}
+	{/each}
+	{#each $notes as note}
+		{#if note.parentFolderId == parentFolderId}
+			<div class="flex justify-between rounded-xl hover:bg-zinc-600">
+				<button class="w-full cursor-pointer py-2 pl-2 text-start">{note.name}</button>
+				<div class="flex items-center gap-2">
+					<button>
+						<PencilSquare />
+					</button>
+					<button class="pr-2">
+						<TrashCan />
+					</button>
+				</div>
+			</div>
 		{/if}
 	{/each}
 </div>
