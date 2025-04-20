@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { folders, password } from '$lib/store';
+	import { expandedFoldersIDs, folders, password } from '$lib/store';
 	import Folders from './folders/Folders.svelte';
 	import { onMount } from 'svelte';
 	import { newFolder } from './folders/functions';
@@ -20,6 +20,11 @@
 				}
 				folders.set(
 					(await FoldersResponse.json()).filter((folder) => folder.projectId == projectId)
+				);
+				expandedFoldersIDs.set(
+					localStorage.getItem('expandedFoldersIDs')
+						? JSON.parse(localStorage.getItem('expandedFoldersIDs'))
+						: []
 				);
 				unsubscribe(); // Stop listening to the store after the password is used
 			}

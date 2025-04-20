@@ -52,6 +52,7 @@
 							} else {
 								expandedFoldersIDs.set([...$expandedFoldersIDs, folder.id]);
 							}
+							localStorage.setItem('expandedFoldersIDs', JSON.stringify($expandedFoldersIDs));
 						}}
 					>
 						{#if $expandedFoldersIDs.includes(folder.id)}
